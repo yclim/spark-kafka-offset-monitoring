@@ -10,27 +10,29 @@ Example project to showcase a simple approach to monitor processing rate and lag
 
 ## Usage
 
+### Build
 ```
 cd spark-kafka-offset-monitoring
 mvn package
-cd target
 ```
 
+
+### Run wordcount spark application
 ```
-# run wordcount spark application
+cd target
 spark-submit --deploy-mode client --master local --class spark.WordCount spark-kafka-offset-monitoring-1.0.jar localhost:9092 wordcount_input C:/tmp/cp1
 ```
 
-# run data producer with kafka broker at localhost
+### Run data producer with kafka broker at localhost
 ```
 java -cp spark-kafka-offset-monitoring-1.0.jar producer.DataProducer localhost:9092
 ```
 
-# run kafka offset monitor at port 18080
+### Run kafka offset monitor at port 18080
 ```
 java -cp spark-kafka-offset-monitoring-1.0.jar monitor.KafkaOffsetMonitor 18080 localhost:9092
 ```
-# run FileCheckpointMonitor at port 18081 and local checkpoint base dir at C:/tmp/cp1
+### Run FileCheckpointMonitor at port 18081 and local checkpoint base dir at C:/tmp/cp1
 
 ```
 java -cp spark-kafka-offset-monitoring-1.0.jar monitor.FileOffsetMonitor 18081 C:/tmp/cp1
