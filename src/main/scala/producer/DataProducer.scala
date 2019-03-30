@@ -58,18 +58,20 @@ object DataProducer {
     val TOPIC = "wordcount_input"
     val r = scala.util.Random
     val sb = new StringBuilder()
+    // submit 100 records per seconds
     while (true) {
-      for(i <- 1 to 50){
-        val randIndex = r.nextInt(tokens.size)
-        sb.append(tokens(randIndex))
-        sb.append(" ")
+      for (i <- 1 to 10) {
+        for(i <- 1 to 50){
+          val randIndex = r.nextInt(tokens.size)
+          sb.append(tokens(randIndex))
+          sb.append(" ")
+        }
+        val line = sb.toString
+        val record = new ProducerRecord(TOPIC, "key", line)
+        producer.send(record)
+        sb.clear
       }
-      val line = sb.toString
-      val record = new ProducerRecord(TOPIC, "key", line)
-      LOG.info(line)
-      producer.send(record)
-      sb.clear
-      Thread.sleep(1000);
+      Thread.sleep(100);
     }
 
     producer.close()

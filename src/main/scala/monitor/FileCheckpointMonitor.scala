@@ -47,7 +47,7 @@ object FileCheckpointMonitor {
       } catch {
         // continue to run to ignore intermittent filesystem error
         case e : Exception =>
-          LOG.error(e.getMessage)
+          e.printStackTrace()
       }
       Thread.sleep(5000)
     }
@@ -65,6 +65,10 @@ object FileCheckpointMonitor {
     })
 
     var checkpoints = new ArrayBuffer[File]
+    if (dirs == null) {
+      LOG.info(s"No checkpoint folder found in $checkpointBasepath")
+      return
+    }
     for (p <- dirs) {
       val file = new File(p.getPath + "/offsets")
       if (file.exists) {
